@@ -3,6 +3,9 @@ const http=require("http")
 
 const express=require("express")
 
+const errorControllers=require("./controllers/error")
+const successControllers=require("./controllers/success")
+
 const bodyparser=require("body-parser")
 const app=express()
 
@@ -21,14 +24,9 @@ app.use("/contact",contactRoutes)
 app.use(shopRoutes)
 
 // Success route
-app.get("/success", (req, res) => {
-    res.send("<h1>Form successfully filled</h1>");
-});
+app.get("/success", successControllers.getSuccesspage);
 
-app.use((req,res,next)=>{     //if i dont give path it automatically think get request
-    
-    res.status(404).sendFile(path.join(__dirname,"views","404.html"))
-})
+app.use(errorControllers.get404)
 
 const server=http.createServer(app)
-app.listen(3000)
+app.listen(3001)
